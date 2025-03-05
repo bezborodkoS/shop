@@ -33,7 +33,6 @@ public class CategoryController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createCategory(@RequestBody Category category) {
-        System.out.println(category.toString());
         return categoryService.save(category) != null
                 ? new ResponseEntity<>(HttpStatus.CREATED)
                 : new ResponseEntity<>("this category " + category.getName() + " is present", HttpStatus.BAD_REQUEST);
@@ -46,12 +45,12 @@ public class CategoryController {
                 : new ResponseEntity<>("Cant found category " + nameCategory, HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("/delete/{idCategory}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long idCategory) {
-        return categoryService.delete(idCategory)
-                ? new ResponseEntity<>("Delete category " + idCategory, HttpStatus.OK)
-                : new ResponseEntity<>("Cant found category with id " + idCategory, HttpStatus.BAD_REQUEST);
-    }
+//    @DeleteMapping("/delete/{idCategory}")
+//    public ResponseEntity<String> deleteCategory(@PathVariable Long idCategory) {
+//        return categoryService.delete(idCategory)
+//                ? new ResponseEntity<>("Delete category " + idCategory, HttpStatus.OK)
+//                : new ResponseEntity<>("Cant found category with id " + idCategory, HttpStatus.BAD_REQUEST);
+//    }
 
 //    TODO dont work @RequestParam. Rewrite
 //    @DeleteMapping("/delete")

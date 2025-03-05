@@ -1,10 +1,9 @@
 package com.example.shop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -16,4 +15,12 @@ public class Customer {
     private String username;
     private String password;
     private String role;
+
+    @ManyToMany
+    @JoinTable(
+            name = "customer_product",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products;
 }

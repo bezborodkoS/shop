@@ -1,5 +1,6 @@
 package com.example.shop.controller;
 
+import com.example.shop.model.dto.CategoryDto;
 import com.example.shop.model.enity.Category;
 import com.example.shop.service.crudMethodsForWorkModelDb.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -20,22 +21,22 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategory() {
+    public ResponseEntity<List<CategoryDto>> getAllCategory() {
         return new ResponseEntity<>(categoryService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{nameCategory}")
-    public ResponseEntity<Optional<Category>> getCategoryByName(@PathVariable String nameCategory) {
+    public ResponseEntity<Optional<CategoryDto>> getCategoryByName(@PathVariable String nameCategory) {
         return categoryService.getByName(nameCategory).isPresent()
                 ? new ResponseEntity<>(categoryService.getByName(nameCategory), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createCategory(@RequestBody Category category) {
-        return categoryService.save(category) != null
+    public ResponseEntity<String> createCategory(@RequestBody CategoryDto categoryDto) {
+        return categoryService.save(categoryDto) != null
                 ? new ResponseEntity<>(HttpStatus.CREATED)
-                : new ResponseEntity<>("this category " + category.getName() + " is present", HttpStatus.BAD_REQUEST);
+                : new ResponseEntity<>("this category " + categoryDto.getName() + " is present", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/delete/{nameCategory}")

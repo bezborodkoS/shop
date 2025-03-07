@@ -1,5 +1,7 @@
 package com.example.shop.service.crudMethodsForWorkModelDb;
 
+import com.example.shop.converter.ProductConverter;
+import com.example.shop.model.dto.ProductDto;
 import com.example.shop.model.enity.Product;
 import com.example.shop.repository.CategoryRepository;
 import com.example.shop.repository.ProductRepository;
@@ -12,37 +14,40 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductConverter productConverter;
 
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ProductConverter productConverter) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.productConverter = productConverter;
     }
 
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public List<ProductDto> getAll() {
+        return productConverter.toDTOList(productRepository.findAll());
     }
 
-    public List<Product> getAllByCategoryName(String nameCategory) {
-        return productRepository.findAllByCategory_Name(nameCategory);
+    public List<ProductDto> getAllByCategoryName(String nameCategory) {
+        return productConverter.toDTOList(productRepository.findAllByCategory_Name(nameCategory));
     }
 
-    public Optional<Product> getByName(String name) {
-        return productRepository.findByName(name);
+    public Optional<ProductDto> getByName(String name) {
+        return Optional.of(productConverter.toDTO(productRepository.findByName(name).get()));
     }
 
-    public Optional<Product> getByNameAndFabricator(String name, String fabricator) {
-        return productRepository.findByNameAndFabricator(name,fabricator);
+    public Optional<ProductDto> getByNameAndFabricator(String name, String fabricator) {
+        return Optional.of(productConverter.toDTO(productRepository.findByNameAndFabricator(name, fabricator).get()));
     }
 
-    public Optional<Product> getByProductCode(String productCode) {
-        return productRepository.findByProductCode(productCode);
+    public Optional<ProductDto> getByProductCode(String productCode) {
+        return Optional.of(productConverter.toDTO(productRepository.findByProductCode(productCode).get()));
     }
 
-    public Product save(Product product, String nameCategory) {
-        if (!productRepository.findByNameAndFabricator(product.getName(), product.getFabricator()).isPresent()
+    public ProductDto save(ProductDto productDto, String nameCategory) {
+        if (!productRepository.findByNameAndFabricator(productDto.getName(), productDto.getFabricator()).isPresent()
                 && categoryRepository.findByName(nameCategory).isPresent()) {
+            Product product = productConverter.toEntity(productDto);
             product.setCategory(categoryRepository.findByName(nameCategory).get());
-            return productRepository.save(product);
+            return productConverter.toDTO(productRepository.save(product));
         }
         return null;
     }

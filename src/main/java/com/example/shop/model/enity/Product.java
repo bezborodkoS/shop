@@ -45,15 +45,4 @@ public class Product {
                 .replaceAll("(.{5})", "$1-").substring(0, 29);
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", fabricator='" + fabricator + '\'' +
-                ", productCode='" + productCode + '\'' +
-                ", price=" + price +
-                ", category=" + category +
-                '}';
-    }
 }

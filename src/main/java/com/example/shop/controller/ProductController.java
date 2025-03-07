@@ -1,6 +1,6 @@
 package com.example.shop.controller;
 
-import com.example.shop.model.enity.Product;
+import com.example.shop.model.dto.ProductDto;
 import com.example.shop.service.crudMethodsForWorkModelDb.CategoryService;
 import com.example.shop.service.crudMethodsForWorkModelDb.ProductService;
 import org.springframework.http.HttpStatus;
@@ -22,19 +22,19 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProduct() {
+    public ResponseEntity<List<ProductDto>> getAllProduct() {
         return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
     }
 
     //    TODO May be delete because in ProductService have this method
     @GetMapping("/category/{categoryName}")
-    public ResponseEntity<List<Product>> getAllProductByCategoryName(@PathVariable String categoryName) {
+    public ResponseEntity<List<ProductDto>> getAllProductByCategoryName(@PathVariable String categoryName) {
 
         return new ResponseEntity<>(productService.getAllByCategoryName(categoryName), HttpStatus.OK);
     }
 
     @GetMapping("/{productCode}")
-    public ResponseEntity<Optional<Product>> getProductByProductCode(@PathVariable String productCode) {
+    public ResponseEntity<Optional<ProductDto>> getProductByProductCode(@PathVariable String productCode) {
         return productService.getByProductCode(productCode).isPresent()
                 ? new ResponseEntity<>(productService.getByProductCode(productCode), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -42,12 +42,12 @@ public class ProductController {
 
 
     @PostMapping("/create/{nameCategory}")
-    public ResponseEntity<String> createProduct(@RequestBody Product product,
+    public ResponseEntity<String> createProduct(@RequestBody ProductDto productDto,
                                                 @PathVariable String nameCategory) {
-        if (productService.getByNameAndFabricator(product.getName(), product.getFabricator()).isPresent()) {
+        if (productService.getByNameAndFabricator(productDto.getName(), productDto.getFabricator()).isPresent()) {
             return new ResponseEntity<>("This product is in the store", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return productService.save(product, nameCategory) != null
+        return productService.save(productDto, nameCategory) != null
                 ? new ResponseEntity<>("Product add to shop", HttpStatus.CREATED)
                 : new ResponseEntity<>("This category is not available in the store", HttpStatus.INTERNAL_SERVER_ERROR);
     }

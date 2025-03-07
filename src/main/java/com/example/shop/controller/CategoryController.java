@@ -1,6 +1,6 @@
 package com.example.shop.controller;
 
-import com.example.shop.model.Category;
+import com.example.shop.model.enity.Category;
 import com.example.shop.service.crudMethodsForWorkModelDb.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

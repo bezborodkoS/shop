@@ -1,7 +1,7 @@
 CREATE TABLE category
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE product
@@ -9,9 +9,9 @@ CREATE TABLE product
     id           SERIAL PRIMARY KEY,
     name         VARCHAR(255)       NOT NULL,
     fabricator   VARCHAR(50)        NOT NULL,
-    product_code VARCHAR(23) UNIQUE NOT NULL,
+    product_code VARCHAR(29) UNIQUE NOT NULL,
     price        DECIMAL(10, 2)     NOT NULL,
-    category_id  INT,
+    category_id  INT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE SET NULL
 );
 

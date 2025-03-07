@@ -1,6 +1,6 @@
 package com.example.shop.service.crudMethodsForWorkModelDb;
 
-import com.example.shop.model.Category;
+import com.example.shop.model.enity.Category;
 import com.example.shop.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,8 @@
 package com.example.shop.service.crudMethodsForWorkModelDb;
 
-import com.example.shop.model.Product;
+import com.example.shop.model.enity.Product;
 import com.example.shop.repository.CategoryRepository;
 import com.example.shop.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,27 +18,46 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Product> getAll() { return productRepository.findAll(); }
-    public Optional<Product> getByName(String name) { return productRepository.findByName(name); }
-    public Product save(Product product,String nameCategory) {
-        if (!productRepository.findByName(product.getName()).isPresent()
-                &&categoryRepository.findByName(nameCategory).isPresent()){
+    public List<Product> getAll() {
+        return productRepository.findAll();
+    }
+
+    public List<Product> getAllByCategoryName(String nameCategory) {
+        return productRepository.findAllByCategory_Name(nameCategory);
+    }
+
+    public Optional<Product> getByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    public Optional<Product> getByNameAndFabricator(String name, String fabricator) {
+        return productRepository.findByNameAndFabricator(name,fabricator);
+    }
+
+    public Optional<Product> getByProductCode(String productCode) {
+        return productRepository.findByProductCode(productCode);
+    }
+
+    public Product save(Product product, String nameCategory) {
+        if (!productRepository.findByNameAndFabricator(product.getName(), product.getFabricator()).isPresent()
+                && categoryRepository.findByName(nameCategory).isPresent()) {
             product.setCategory(categoryRepository.findByName(nameCategory).get());
             return productRepository.save(product);
         }
         return null;
     }
+
     public boolean delete(Long id) {
-        if (productRepository.findById(id).isPresent()){
+        if (productRepository.findById(id).isPresent()) {
             productRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public boolean delete(String name) {
-        if (productRepository.findByName(name).isPresent()){
-            productRepository.deleteById(productRepository.findByName(name).get().getId());
+    public boolean delete(String productCode) {
+        if (productRepository.findByProductCode(productCode).isPresent()) {
+            productRepository.deleteById(productRepository.findByProductCode(productCode).get().getId());
             return true;
         }
         return false;

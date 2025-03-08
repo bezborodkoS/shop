@@ -4,14 +4,19 @@ import com.example.shop.converter.CategoryConverter;
 import com.example.shop.model.dto.CategoryDto;
 import com.example.shop.model.enity.Category;
 import com.example.shop.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
+    private static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
+
     private final CategoryRepository repository;
     private final CategoryConverter categoryConverter;
 
@@ -21,33 +26,58 @@ public class CategoryService {
     }
 
     public List<CategoryDto> getAll() {
-        return categoryConverter.toDTOList(repository.findAll());
+        try {
+            return categoryConverter.toDTOList(repository.findAll());
+        } catch (Exception e) {
+            logger.error("Ошибка при получении списка категории", e);
+            return Collections.emptyList();
+        }
     }
 
     public Optional<CategoryDto> getByName(String name) {
+        try {
             return Optional.of(categoryConverter.toDTO(repository.findByName(name).get()));
+        } catch (Exception e) {
+            logger.error("Ошибка при получении категории", e);
+            return Optional.empty();
+        }
     }
 
     public Category save(CategoryDto categoryDto) {
-        if (repository.findByName(categoryDto.getName()).isPresent()) {
+        try {
+            if (repository.findByName(categoryDto.getName()).isPresent()) {
+                return null;
+            }
+            return repository.save(categoryConverter.toEntity(categoryDto));
+        } catch (Exception e) {
+            logger.error("Ошибка при сохранении категории", e);
             return null;
         }
-        return repository.save(categoryConverter.toEntity(categoryDto));
     }
 
     public boolean delete(Long id) {
-        if (repository.findById(id).isPresent()) {
-            repository.deleteById(id);
-            return true;
+        try {
+            if (repository.findById(id).isPresent()) {
+                repository.deleteById(id);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            logger.error("Ошибка при удалении категории", e);
+            return false;
         }
-        return false;
     }
 
     public boolean delete(String nameCategory) {
-        if (repository.findByName(nameCategory).isPresent()) {
-            repository.deleteById(repository.findByName(nameCategory).get().getId());
-            return true;
+        try {
+            if (repository.findByName(nameCategory).isPresent()) {
+                repository.deleteById(repository.findByName(nameCategory).get().getId());
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            logger.error("Ошибка при удалении категории", e);
+            return false;
         }
-        return false;
     }
 }

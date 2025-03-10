@@ -27,11 +27,9 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-//    @ManyToMany(mappedBy = "products")
-//    private Set<Customer> customers;
-//
-//    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-//    private List<History> purchaseHistory;
+    @ManyToMany(mappedBy = "products")
+    private List<User> users;
+
 
     @PrePersist
     protected void autofillVWhenSaveNewProduct() {

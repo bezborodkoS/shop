@@ -1,4 +1,4 @@
-package com.example.shop.controller;
+package com.example.shop.controller.admin;
 
 import com.example.shop.model.dto.CategoryDto;
 import com.example.shop.model.enity.Category;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 //  TODO Using only ROLE_ADMIN
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/admin/category")
 public class CategoryController {
     private final CategoryService categoryService;
 

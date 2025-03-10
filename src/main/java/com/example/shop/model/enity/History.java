@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 public class History {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String category;
@@ -21,6 +21,6 @@ public class History {
     private String productCode;
     private LocalDateTime purchaseDate = LocalDateTime.now();
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

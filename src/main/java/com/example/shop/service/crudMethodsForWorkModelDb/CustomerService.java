@@ -1,7 +1,7 @@
 package com.example.shop.service.crudMethodsForWorkModelDb;
 
-import com.example.shop.model.enity.Customer;
-import com.example.shop.repository.CustomerRepository;
+import com.example.shop.model.enity.User;
+import com.example.shop.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,21 +9,21 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 //    private final PasswordEncoder passwordEncoder;
 
-    public CustomerService(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public CustomerService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public List<Customer> getAll() { return customerRepository.findAll(); }
-    public Optional<Customer> getByUsername(String username) { return customerRepository.findByUsername(username); }
-    public Customer save(Customer customer) {
+    public List<User> getAll() { return userRepository.findAll(); }
+    public Optional<User> getByUsername(String username) { return userRepository.findByUsername(username); }
+    public User save(User user) {
 //        TODO coding password in customer
 //        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        customer.setRole("CUSTOMER");
+        user.setRole("CUSTOMER");
 
-        return customerRepository.save(customer);
+        return userRepository.save(user);
     }
-    public void delete(Long id) { customerRepository.deleteById(id); }
+    public void delete(Long id) { userRepository.deleteById(id); }
 }

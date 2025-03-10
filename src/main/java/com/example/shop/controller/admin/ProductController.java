@@ -1,4 +1,4 @@
-package com.example.shop.controller;
+package com.example.shop.controller.admin;
 
 import com.example.shop.model.dto.ProductDto;
 import com.example.shop.service.crudMethodsForWorkModelDb.CategoryService;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/admin/product")
 public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
